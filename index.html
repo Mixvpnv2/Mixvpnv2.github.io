@@ -1,326 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Highlights</title>
+    <title>CatteState V5 Black out</title>
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
-            color: #e0e0e0;
+            background-color: #0b0c10;
+            color: #ffffff;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 30%, #1f2833 0%, #0b0c10 70%);
             min-height: 100vh;
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
+
+        /* Шапка сайта */
         header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
-            background-color: #1e1e1e;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            padding: 20px 80px;
+            width: 100%;
         }
-        
+
         .logo {
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
+            font-weight: 900;
+            font-size: 24px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
-        
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
-            border-radius: 8px;
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 20px;
-            color: #2c2c2c;
-        }
-        
-        h1 {
-            font-size: 28px;
+
+        nav a {
+            color: #aaaaaa;
+            text-decoration: none;
             font-weight: 600;
-            background: linear-gradient(to right, #ffffff, #c0c0c0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-right: auto;
+            transition: 0.3s;
         }
-        
-        .menu {
-            display: flex;
-            gap: 15px;
+
+        nav a:hover {
+            color: #ffffff;
         }
-        
-        .menu-btn {
-            padding: 8px 15px;
-            background-color: #3a3a3a;
+
+        .btn {
+            background-color: #00a896;
+            color: #ffffff;
             border: none;
-            border-radius: 5px;
-            color: #e0e0e0;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.3s;
+            text-transform: lowercase;
         }
-        
-        .menu-btn:hover {
-            background-color: #4a4a4a;
+
+        .btn:hover {
+            background-color: #02c39a;
+            box-shadow: 0 0 15px #00a896;
         }
-        
-        .players-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .player-card {
-            background: linear-gradient(145deg, #2a2a2a, #252525);
-            border-radius: 10px;
-            padding: 20px;
+
+        /* Главный контент */
+        main {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            border: 1px solid #3a3a3a;
-            position: relative;
-            overflow: hidden;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
         }
-        
-        .player-card::before {
-            content: '';
-            position: absolute;
+
+        /* Уменьшенный размер главного заголовка */
+        h1 {
+            font-size: 48px; 
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: #888888;
+            font-size: 16px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        /* Модальное окно со скриптом */
+        .modal {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), transparent);
-            pointer-events: none;
-        }
-        
-        .player-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
-            border-color: #ffffff;
-        }
-        
-        .player-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
             justify-content: center;
-            font-size: 32px;
-            color: #2c2c2c;
-            border: 3px solid #3a3a3a;
-            transition: all 0.3s ease;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        
-        .player-card:hover .player-avatar {
-            border-color: #ffffff;
-            transform: scale(1.05);
-        }
-        
-        .player-name {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #ffffff;
-        }
-        
-        .player-status {
-            font-size: 14px;
-            color: #a0a0a0;
-            margin-bottom: 15px;
-        }
-        
-        .player-stats {
+
+        .modal.show {
             display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #3a3a3a;
+            opacity: 1;
         }
-        
-        .stat {
-            text-align: center;
+
+        .modal-content {
+            background-color: #14171c;
+            border: 1px solid #00a896;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 650px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 168, 150, 0.3);
+            text-align: left;
         }
-        
-        .stat-value {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: #a0a0a0;
-        }
-        
-        .highlight-bar {
-            height: 4px;
-            width: 0;
-            background: linear-gradient(to right, #a0a0a0, #ffffff);
+
+        .close-btn {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            transition: width 0.3s ease;
-        }
-        
-        .player-card:hover .highlight-bar {
-            width: 100%;
-        }
-        
-        .toolbar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #252525;
-            border-radius: 10px;
-        }
-        
-        .tool-btn {
-            padding: 8px 16px;
-            background-color: #3a3a3a;
-            border: none;
-            border-radius: 5px;
-            color: #e0e0e0;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: #888;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
-        
-        .tool-btn:hover {
-            background-color: #4a4a4a;
+
+        .close-btn:hover {
+            color: #fff;
         }
-        
-        .search-box {
-            padding: 8px 15px;
-            background-color: #2a2a2a;
-            border: 1px solid #3a3a3a;
-            border-radius: 5px;
-            color: #e0e0e0;
-            width: 250px;
-            margin-left: auto;
+
+        .modal h3 {
+            margin-bottom: 15px;
+            color: #00a896;
         }
-        
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #a0a0a0;
-            font-size: 14px;
+
+        .script-box {
+            background-color: #0b0c10;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #02c39a;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            border: 1px solid #222;
+            max-height: 300px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <div class="logo-icon">R</div>
-                <h1>Roblox Studio</h1>
-            </div>
-            <div class="menu">
-                <button class="menu-btn">File</button>
-                <button class="menu-btn">Edit</button>
-                <button class="menu-btn">View</button>
-                <button class="menu-btn">Play</button>
-                <button class="menu-btn">Help</button>
-            </div>
-        </header>
+
+    <header>
+        <div class="logo">CatteStateV5</div>
+        <nav>
+            <!-- Сюда вставьте ссылку на ваш Дискорд сервер вместо ссылки ниже -->
+            <a href="https://discord.gg/NcDtuqm55w" target="_blank">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>CatteState V5 Black out</h1>
+        <div class="subtitle">Bypass AntiCheats?</div>
         
-        <div class="toolbar">
-            <button class="tool-btn">Select</button>
-            <button class="tool-btn">Move</button>
-            <button class="tool-btn">Scale</button>
-            <button class="tool-btn">Rotate</button>
-            <button class="tool-btn">Play</button>
-            <input type="text" class="search-box" placeholder="Search players...">
+        <button class="btn" style="padding: 15px 40px; font-size: 16px;" onclick="openScript()">script</button>
+    </main>
+
+    <div class="modal" id="scriptModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeScript()">&times;</span>
+            <h3>Scripts</h3>
+            <div class="script-box" id="scriptText">loadstring(game:HttpGet("https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/NewMainScript.lua", true))()</div>
         </div>
-        
-        <div class="players-grid">
-            <!-- Player cards will be generated here -->
-        </div>
-        
-        <footer>
-            <p>Player Highlight System | © 2025 Dev Corporation</p>
-        </footer>
     </div>
 
     <script>
-        // Player data
-        const players = [
-            { name: "1084054251766038579", status: "Online", level: 999, coins: 9 },
-            { name: "948527004142174238", status: "In Game", level: 999, coins: 8 },
-            { name: "1381719163982057553", status: "Online", level: 999, coins: 2543 },
-            { name: "750404403512606730", status: "Offline", level: 999, coins: 62 },
-            { name: "895354163809116231", status: "In Game", level: 999, coins: 516 },
-            { name: "863712363286495232", status: "Online", level: 999, coins: 6277 },
-            { name: "1169193665848168529", status: "Away", level: 999, coins: 82554 },
-            { name: "1175904641913983006", status: "Online", level: 999, coins: 73 }
-        ];
+        function openScript() {
+            const modal = document.getElementById('scriptModal');
+            modal.classList.add('show');
+        }
 
-        // Generate player cards
-        const playersGrid = document.querySelector('.players-grid');
-        
-        players.forEach(player => {
-            const card = document.createElement('div');
-            card.className = 'player-card';
-            
-            // Get initial letter for avatar
-            const initial = player.name.charAt(0);
-            
-            card.innerHTML = `
-                <div class="player-avatar">${initial}</div>
-                <h3 class="player-name">${player.name}</h3>
-                <p class="player-status">${player.status}</p>
-                <div class="player-stats">
-                    <div class="stat">
-                        <div class="stat-value">${player.level}</div>
-                        <div class="stat-label">Level</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">${player.coins}</div>
-                        <div class="stat-label">Coins</div>
-                    </div>
-                </div>
-                <div class="highlight-bar"></div>
-            `;
-            
-            playersGrid.appendChild(card);
-        });
+        function closeScript() {
+            const modal = document.getElementById('scriptModal');
+            modal.classList.remove('show');
+        }
 
-        // Add hover effect with slight delay for smoother experience
-        const playerCards = document.querySelectorAll('.player-card');
-        
-        playerCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transition = 'all 0.3s ease';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transition = 'all 0.4s ease';
-            });
-        });
+        window.onclick = function(event) {
+            const modal = document.getElementById('scriptModal');
+            if (event.target == modal) {
+                modal.classList.remove('show');
+            }
+        }
     </script>
+
 </body>
 </html>
